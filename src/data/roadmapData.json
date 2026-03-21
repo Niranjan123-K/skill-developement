@@ -1,0 +1,623 @@
+{
+    "levels": [
+        {
+            "id": "level_1",
+            "title": "Level 1 - Foundation (1st Year)",
+            "description": "Master the rock-solid basics of programming logic, core data structures, and the foundational front-end web stack.",
+            "modules": [
+                {
+                    "id": "month_1",
+                    "title": "Month 1 - Programming Basics",
+                    "description": "Master the fundamental syntax and logic of programming.",
+                    "topics": [
+                        "Variables",
+                        "Data Types",
+                        "Operators",
+                        "Input/Output"
+                    ],
+                    "output": "Command-line Personal Bio",
+                    "tasks": [
+                        {
+                            "id": "m1_1",
+                            "title": "Variable Declaration & Types",
+                            "phase": "Phase 1: Concepts",
+                            "type": "Learning",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "Variables are memory containers. Use let and const for modern JS.",
+                                "instructions": "Declare variables for your name, age, and a boolean for status.",
+                                "example": "let name = 'Dev'; const age = 22;"
+                            }
+                        },
+                        {
+                            "id": "m1_2",
+                            "title": "Practice Arithmetic Ops",
+                            "phase": "Phase 2: Practice",
+                            "type": "Practice",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "Perform calculations using +, -, *, /.",
+                                "instructions": "Create a simple calculator logic that adds two numbers.",
+                                "example": "let sum = 5 + 10;"
+                            }
+                        },
+                        {
+                            "id": "m1_3",
+                            "title": "Build Personal Bio CLI",
+                            "phase": "Phase 3: Building",
+                            "type": "Project",
+                            "xp": 100,
+                            "content": {
+                                "explanation": "Combine variables and console output.",
+                                "instructions": "Create a script that logs a full bio based on variables.",
+                                "example": "console.log(`Hi, I am ${name}`);"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "month_2",
+                    "title": "Month 2 - Control Flow",
+                    "description": "Learn how to make decisions and repeat actions in code.",
+                    "topics": [
+                        "If-Else",
+                        "Switch",
+                        "Loops",
+                        "Logical Operators"
+                    ],
+                    "output": "Number Guessing Game",
+                    "tasks": [
+                        {
+                            "id": "m2_1",
+                            "title": "Conditional Logic",
+                            "phase": "Phase 1: Concepts",
+                            "type": "Learning",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "Use if/else to branch code execution.",
+                                "instructions": "Write a script that checks if a number is even or odd.",
+                                "example": "if(n % 2 === 0) { ... }"
+                            }
+                        },
+                        {
+                            "id": "m2_2",
+                            "title": "Looping Through Data",
+                            "phase": "Phase 2: Practice",
+                            "type": "Practice",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "Use for and while loops to iterate.",
+                                "instructions": "Print numbers 1 to 100 using a for loop.",
+                                "example": "for(let i=0; i<100; i++) { ... }"
+                            }
+                        },
+                        {
+                            "id": "m2_3",
+                            "title": "Number Guessing Project",
+                            "phase": "Phase 3: Building",
+                            "type": "Project",
+                            "xp": 150,
+                            "content": {
+                                "explanation": "A game where you guess a secret number.",
+                                "instructions": "Build a loop that keeps asking for guesses until correct.",
+                                "example": "while(guess !== target) { ... }"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "month_3",
+                    "title": "Month 3 - Functions & Scope",
+                    "description": "Organize your code into reusable blocks.",
+                    "topics": [
+                        "Declarations",
+                        "Arrow Functions",
+                        "Parameters",
+                        "Scope"
+                    ],
+                    "output": "Modular Calculator",
+                    "tasks": [
+                        {
+                            "id": "m3_1",
+                            "title": "Function Basics",
+                            "phase": "Phase 1: Concepts",
+                            "type": "Learning",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "Functions wrap logic for reuse.",
+                                "instructions": "Define a function that calculates area.",
+                                "example": "function area(r) { return 3.14 * r * r; }"
+                            }
+                        },
+                        {
+                            "id": "m3_2",
+                            "title": "Arrow Functions & ES6",
+                            "phase": "Phase 2: Practice",
+                            "type": "Practice",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "Shorthand syntax for functions.",
+                                "instructions": "Convert your area function to an arrow function.",
+                                "example": "const area = (r) => 3.14 * r * r;"
+                            }
+                        },
+                        {
+                            "id": "m3_3",
+                            "title": "Temp Converter Mini-Project",
+                            "phase": "Phase 3: Building",
+                            "type": "Project",
+                            "xp": 100,
+                            "content": {
+                                "explanation": "Convert Celsius to Fahrenheit using functions.",
+                                "instructions": "Build a small CLI tool for temperature conversion.",
+                                "example": "const toFahrenheit = (c) => c * 9/5 + 32;"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "month_4",
+                    "title": "Month 4 - HTML Structure",
+                    "description": "Build the skeleton of the web.",
+                    "topics": [
+                        "Semantic HTML",
+                        "Forms",
+                        "Accessibility",
+                        "SEO"
+                    ],
+                    "output": "Multi-page Personal Site",
+                    "tasks": [
+                        {
+                            "id": "m4_1",
+                            "title": "Semantic Tags",
+                            "phase": "Phase 1: Concepts",
+                            "type": "Learning",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "Tags that describe their content (header, footer, main).",
+                                "instructions": "Structure a basic page using only semantic elements.",
+                                "example": "<main><section></section></main>"
+                            }
+                        },
+                        {
+                            "id": "m4_2",
+                            "title": "HTML Forms Practice",
+                            "phase": "Phase 2: Practice",
+                            "type": "Practice",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "Collecting user data.",
+                                "instructions": "Create a contact form with name, email, and message.",
+                                "example": "<form><input type='email'/></form>"
+                            }
+                        },
+                        {
+                            "id": "m4_3",
+                            "title": "Static Portfolio Project",
+                            "phase": "Phase 3: Building",
+                            "type": "Project",
+                            "xp": 150,
+                            "content": {
+                                "explanation": "A complete HTML-only portfolio.",
+                                "instructions": "Create index.html, about.html, and contact.html.",
+                                "example": "<a href='about.html'>About Me</a>"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "month_5",
+                    "title": "Month 5 - CSS Styling",
+                    "description": "Make the web beautiful and responsive.",
+                    "topics": [
+                        "Flexbox",
+                        "Grid",
+                        "Animations",
+                        "Responsive"
+                    ],
+                    "output": "Responsive Landing Page",
+                    "tasks": [
+                        {
+                            "id": "m5_1",
+                            "title": "Flexbox Mastery",
+                            "phase": "Phase 1: Concepts",
+                            "type": "Learning",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "1D layouts with Flexbox.",
+                                "instructions": "Align a navigation bar using display: flex.",
+                                "example": "justify-content: space-between;"
+                            }
+                        },
+                        {
+                            "id": "m5_2",
+                            "title": "CSS Grid Practice",
+                            "phase": "Phase 2: Practice",
+                            "type": "Practice",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "2D layouts with Grid.",
+                                "instructions": "Create a 3-column photo gallery grid.",
+                                "example": "grid-template-columns: repeat(3, 1fr);"
+                            }
+                        },
+                        {
+                            "id": "m5_3",
+                            "title": "SaaS Landing Page Clone",
+                            "phase": "Phase 3: Building",
+                            "type": "Project",
+                            "xp": 200,
+                            "content": {
+                                "explanation": "Cloning a modern landing page.",
+                                "instructions": "Build a hero section and features grid.",
+                                "example": "min-height: 100vh; display: grid;"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "month_6",
+                    "title": "Month 6 - DOM Interactivity",
+                    "description": "Breathe life into static pages with JavaScript.",
+                    "topics": [
+                        "Events",
+                        "Selectors",
+                        "DOM Manipulation"
+                    ],
+                    "output": "Interactive To-Do App",
+                    "tasks": [
+                        {
+                            "id": "m6_1",
+                            "title": "Event Listeners",
+                            "phase": "Phase 1: Concepts",
+                            "type": "Learning",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "Responding to user clicks and inputs.",
+                                "instructions": "Change button color when clicked.",
+                                "example": "btn.addEventListener('click', ...)"
+                            }
+                        },
+                        {
+                            "id": "m6_2",
+                            "title": "Creating Elements",
+                            "phase": "Phase 2: Practice",
+                            "type": "Practice",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "Adding new content to the page dynamically.",
+                                "instructions": "Write a script that appends a list item to a UL.",
+                                "example": "document.createElement('li');"
+                            }
+                        },
+                        {
+                            "id": "m6_3",
+                            "title": "Functional To-Do Project",
+                            "phase": "Phase 3: Building",
+                            "type": "Project",
+                            "xp": 200,
+                            "content": {
+                                "explanation": "A full CRUD application for tasks.",
+                                "instructions": "Allow users to add, mark complete, and delete tasks.",
+                                "example": "li.classList.toggle('completed');"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "month_7",
+                    "title": "Month 7 - Modern JS & APIs",
+                    "description": "Work with remote data and advanced JS patterns.",
+                    "topics": [
+                        "Promises",
+                        "Async/Await",
+                        "Fetch API",
+                        "JSON"
+                    ],
+                    "output": "Real-time Weather Dashboard",
+                    "tasks": [
+                        {
+                            "id": "m7_1",
+                            "title": "Handling Async",
+                            "phase": "Phase 1: Concepts",
+                            "type": "Learning",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "Working with asynchronous data.",
+                                "instructions": "Fetch data from a public API (like JSONPlaceholder).",
+                                "example": "const response = await fetch(url);"
+                            }
+                        },
+                        {
+                            "id": "m7_2",
+                            "title": "JSON Manipulation",
+                            "phase": "Phase 2: Practice",
+                            "type": "Practice",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "Parsing and stringifying data.",
+                                "instructions": "Convert an object to a string and store it in localStorage.",
+                                "example": "JSON.stringify(userProfile);"
+                            }
+                        },
+                        {
+                            "id": "m7_3",
+                            "title": "Weather App Project",
+                            "phase": "Phase 3: Building",
+                            "type": "Project",
+                            "xp": 200,
+                            "content": {
+                                "explanation": "Building a live weather dashboard.",
+                                "instructions": "Use OpenWeatherMap API to show data based on city input.",
+                                "example": "data.main.temp"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "month_8",
+                    "title": "Month 8 - Algorithms Basics",
+                    "description": "Think like an engineer: efficiency and logic.",
+                    "topics": [
+                        "Binary Search",
+                        "Sorting",
+                        "Complexity",
+                        "DSA"
+                    ],
+                    "output": "Visual Sorting Tool",
+                    "tasks": [
+                        {
+                            "id": "m8_1",
+                            "title": "Intro to Sorting",
+                            "phase": "Phase 1: Concepts",
+                            "type": "Learning",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "How computers order data.",
+                                "instructions": "Implement a simple Bubble Sort algorithm.",
+                                "example": "if(a > b) { swap(a, b) }"
+                            }
+                        },
+                        {
+                            "id": "m8_2",
+                            "title": "Big-O Notation",
+                            "phase": "Phase 2: Practice",
+                            "type": "Practice",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "Measuring code performance.",
+                                "instructions": "Identify O(n) vs O(1) in sample loops.",
+                                "example": "Looping through an array is O(n)."
+                            }
+                        },
+                        {
+                            "id": "m8_3",
+                            "title": "Sorting Visualizer Project",
+                            "phase": "Phase 3: Building",
+                            "type": "Project",
+                            "xp": 200,
+                            "content": {
+                                "explanation": "Animate how sorting algorithms work.",
+                                "instructions": "Represent array values as bars and animate their swapping.",
+                                "example": "bar.style.height = `${value}px`;"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "month_9",
+                    "title": "Month 9 - Version Control & Git",
+                    "description": "Collaborate and manage code like a pro.",
+                    "topics": [
+                        "Git Flow",
+                        "Branches",
+                        "Pull Requests",
+                        "GitHub"
+                    ],
+                    "output": "Collab-Ready Project Repo",
+                    "tasks": [
+                        {
+                            "id": "m9_1",
+                            "title": "Git Basics",
+                            "phase": "Phase 1: Concepts",
+                            "type": "Learning",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "Initializing and committing code.",
+                                "instructions": "Create a repo locally and push it to GitHub.",
+                                "example": "git init; git commit -m 'initial';"
+                            }
+                        },
+                        {
+                            "id": "m9_2",
+                            "title": "Branching & Merging",
+                            "phase": "Phase 2: Practice",
+                            "type": "Practice",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "Working on features without breaking main.",
+                                "instructions": "Create a feature branch and merge it back.",
+                                "example": "git checkout -b feature-test;"
+                            }
+                        },
+                        {
+                            "id": "m9_3",
+                            "title": "Open Source Workflow",
+                            "phase": "Phase 3: Building",
+                            "type": "Project",
+                            "xp": 100,
+                            "content": {
+                                "explanation": "Practice making a contribution.",
+                                "instructions": "Fork a repo, make a change, and submit a PR.",
+                                "example": "Create a pull request on GitHub UI."
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "month_10",
+                    "title": "Month 10 - Capstone Portfolio",
+                    "description": "Synthesize everything into a career-ready portfolio.",
+                    "topics": [
+                        "Full-Stack Preview",
+                        "Hosting",
+                        "Performance"
+                    ],
+                    "output": "Professional Portfolio Website",
+                    "tasks": [
+                        {
+                            "id": "m10_1",
+                            "title": "Advanced Styling",
+                            "phase": "Phase 1: Concepts",
+                            "type": "Learning",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "Premium UI design concepts.",
+                                "instructions": "Apply glassmorphism and custom gradients.",
+                                "example": "backdrop-filter: blur(10px);"
+                            }
+                        },
+                        {
+                            "id": "m10_2",
+                            "title": "Deployment Guide",
+                            "phase": "Phase 2: Practice",
+                            "type": "Practice",
+                            "xp": 50,
+                            "content": {
+                                "explanation": "Putting your work live on Vercel/Netlify.",
+                                "instructions": "Deploy your project and set up a custom domain name.",
+                                "example": "Connect GitHub to Vercel dashboard."
+                            }
+                        },
+                        {
+                            "id": "m10_3",
+                            "title": "The Final Capstone",
+                            "phase": "Phase 3: Building",
+                            "type": "Project",
+                            "xp": 300,
+                            "content": {
+                                "explanation": "Complete showcase of Year 1 skills.",
+                                "instructions": "Build a multi-section profile with dynamic projects section.",
+                                "example": "Fetching local projects.json for data."
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "level_2",
+            "title": "Level 2 - Core Skills (2nd Year)",
+            "description": "Deep dive into web frameworks and architecture.",
+            "modules": [
+                {
+                    "id": "mod_level2_default",
+                    "title": "Core Subjects",
+                    "description": "Advance into React and Node.",
+                    "tasks": [
+                        {
+                            "id": "js_core",
+                            "title": "Advanced JavaScript",
+                            "type": "Learning",
+                            "xp": 100,
+                            "content": {
+                                "explanation": "Coming Soon"
+                            }
+                        },
+                        {
+                            "id": "react_basics",
+                            "title": "Build a React App",
+                            "type": "Project",
+                            "xp": 200,
+                            "content": {
+                                "explanation": "Coming Soon"
+                            }
+                        },
+                        {
+                            "id": "node_1",
+                            "title": "Intro to Node",
+                            "type": "Learning",
+                            "xp": 100,
+                            "content": {
+                                "explanation": "Coming Soon"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "level_3",
+            "title": "Level 3 - Advanced Topics (3rd Year)",
+            "description": "System design, advanced DSA, and complex architectures.",
+            "modules": [
+                {
+                    "id": "mod_level3_default",
+                    "title": "Advanced Topics",
+                    "description": "DSA, OS, Databases.",
+                    "tasks": [
+                        {
+                            "id": "dsa_1",
+                            "title": "Advanced DSA",
+                            "type": "Learning",
+                            "xp": 150,
+                            "content": {
+                                "explanation": "Coming Soon"
+                            }
+                        },
+                        {
+                            "id": "sys_1",
+                            "title": "System Design Basics",
+                            "type": "Learning",
+                            "xp": 150,
+                            "content": {
+                                "explanation": "Coming Soon"
+                            }
+                        },
+                        {
+                            "id": "proj_3",
+                            "title": "Full-Stack E-Commerce",
+                            "type": "Project",
+                            "xp": 400,
+                            "content": {
+                                "explanation": "Coming Soon"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "level_4",
+            "title": "Level 4 - Career Ready (4th Year)",
+            "description": "Aptitude, interviews, and professional readiness.",
+            "modules": [
+                {
+                    "id": "mod_level4_default",
+                    "title": "Career Toolkit",
+                    "description": "Prepare for industry.",
+                    "tasks": [
+                        {
+                            "id": "apt_1",
+                            "title": "Aptitude Prep",
+                            "type": "Learning",
+                            "xp": 100,
+                            "content": {
+                                "explanation": "Coming Soon"
+                            }
+                        },
+                        {
+                            "id": "int_1",
+                            "title": "Mock Interviews",
+                            "type": "Learning",
+                            "xp": 200,
+                            "content": {
+                                "explanation": "Coming Soon"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
