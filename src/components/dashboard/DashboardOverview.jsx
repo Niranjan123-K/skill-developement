@@ -19,6 +19,7 @@ export default function DashboardOverview() {
     const [activeLevelId, setActiveLevelId] = useState(profile.currentLevelId || "level_1");
     const [activeModuleId, setActiveModuleId] = useState(null);
     const [activeTask, setActiveTask] = useState(null);
+    const [activeSemester, setActiveSemester] = useState(1);
 
     // Initial sync from Firebase
     useEffect(() => {
@@ -51,7 +52,7 @@ export default function DashboardOverview() {
     }, []);
 
     const activeLevelObj = useMemo(() => roadmapData.levels.find(l => l.id === activeLevelId) || roadmapData.levels[0], [activeLevelId]);
-    const activeModuleObj = useMemo(() => activeLevelObj.modules?.find(m => m.id === activeModuleId) || null, [activeLevelObj, activeModuleId]);
+    const activeModuleObj = useMemo(() => activeLevelObj?.modules?.find(m => m.id === activeModuleId) || null, [activeLevelObj, activeModuleId]);
 
     // Overall completion array for the entire timeline
     const allCompletedTasks = Object.values(progress).flatMap(p => p.completedTasks || []);
@@ -79,17 +80,14 @@ export default function DashboardOverview() {
         let newXp = xp;
 
         if (completed.includes(taskId)) {
-            // Un-complete
             completed = completed.filter(t => t !== taskId);
             newXp -= taskXp;
         } else {
-            // Complete
             completed.push(taskId);
             newXp += taskXp;
         }
 
-        // Recalculate level percentage to store locally/FB
-        const allLevelTasks = activeLevelObj.modules?.flatMap(m => m.tasks) || [];
+        const allLevelTasks = activeLevelObj?.modules?.flatMap(m => m.tasks) || [];
         const levelPercent = allLevelTasks.length > 0 ? Math.round((completed.length / allLevelTasks.length) * 100) : 0;
 
         const newProgress = {
@@ -102,11 +100,9 @@ export default function DashboardOverview() {
         localStorage.setItem("userProgress", JSON.stringify(newProgress));
         localStorage.setItem("userXp", newXp.toString());
 
-        // Sync to Firebase
         const user = auth.currentUser;
         if (user) {
             try {
-                // Don't await to keep UI fast
                 setDoc(doc(db, "users", user.uid), { progress: newProgress }, { merge: true }).catch(err => console.error(err));
             } catch (error) {
                 console.error("Error updating progress", error);
@@ -114,21 +110,23 @@ export default function DashboardOverview() {
         }
     };
 
-    // Derived "Next Task" logic (Phase 5)
-    // Find the first incomplete task in the active module (if inside a module). 
-    // If not inside a module, find the first incomplete task in the whole level.
-    const nextTask = useMemo(() => {
-        const pool = activeModuleObj ? activeModuleObj.tasks : (activeLevelObj.modules?.flatMap(m => m.tasks) || []);
-        return pool.find(t => !allCompletedTasks.includes(t.id)) || null;
-    }, [activeModuleObj, activeLevelObj, allCompletedTasks]);
+    const dailyMissions = useMemo(() => {
+        const allLevelTasks = activeLevelObj?.modules?.flatMap(m => m.tasks) || [];
+        const incompleteTasks = allLevelTasks.filter(t => !allCompletedTasks.includes(t.id));
+        
+        return {
+            learning: incompleteTasks.find(t => t.type === "Learning"),
+            practice: incompleteTasks.find(t => t.type === "Practice"),
+            project: incompleteTasks.find(t => t.type === "Project")
+        };
+    }, [activeLevelObj, allCompletedTasks]);
 
-
-    if (loading) return <div className="p-8 text-white flex justify-center items-center gap-3 h-screen"><Flame className="animate-bounce text-orange-500" /> Syncing your progress...</div>;
+    if (loading) return <div className="p-8 text-[var(--text-primary)] flex justify-center items-center gap-3 h-screen"><Flame className="animate-bounce text-[#EA580C]" /> Loading your progress...</div>;
 
     const totalLevelsCompleted = roadmapData.levels.filter(l => calculateLevelProgress(l.id) === 100).length;
 
     return (
-        <div className="flex flex-col gap-8 pb-32">
+        <div className="p-8 max-w-7xl mx-auto flex flex-col gap-8 pb-32">
 
             {/* Task Detail Modal */}
             <TaskDetail
@@ -138,74 +136,70 @@ export default function DashboardOverview() {
                 onClose={() => setActiveTask(null)}
             />
 
-            {/* Hero Panel */}
-            <div className="glass-panel p-8 md:p-10 rounded-[2.5rem] relative overflow-hidden shadow-2xl border border-indigo-500/20 bg-gradient-to-br from-indigo-950/80 to-purple-950/50">
-                <div className="absolute -top-32 -right-32 w-[35rem] h-[35rem] bg-indigo-500/20 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
-                <div className="absolute -bottom-32 -left-32 w-[35rem] h-[35rem] bg-fuchsia-600/10 rounded-full blur-[100px] pointer-events-none" style={{ animationDelay: '1.5s' }}></div>
-
+            {/* Clean Hero Panel */}
+            <div className="bg-white p-8 md:p-10 rounded-xl shadow-sm border border-[var(--border-color)] relative overflow-hidden">
                 <div className="relative z-10 flex flex-col lg:flex-row justify-between items-start gap-8">
                     <div className="flex-1">
                         <div className="flex items-center gap-3 mb-4">
-                            <span className="px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-[11px] font-bold text-indigo-200 uppercase tracking-widest backdrop-blur-xl">
+                            <span className="px-4 py-1.5 rounded-full bg-[#F8F9FA] border border-[var(--border-color)] text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-widest">
                                 {profile.skillLevel || "Beginner"} • {profile.goal || "Learning"}
                             </span>
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-black text-white mb-3 tracking-tight">
-                            Welcome back 👋
+                        <h1 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)] mb-3 tracking-tight">
+                            Welcome back, {profile.name || profile.displayName || "Student"} 🚀
                         </h1>
-                        <p className="text-indigo-200 text-lg max-w-xl font-medium tracking-tight opacity-90 leading-relaxed mb-6">
-                            Keep completing learning modules to unlock new opportunities. Consistency is the key to mastery.
+                        <p className="text-[var(--text-secondary)] text-[15px] max-w-xl font-medium leading-relaxed mb-6">
+                            You are building your future step by step. Keep completing daily missions to unlock new opportunities.
                         </p>
 
-                        {/* Next Task Recommendation */}
-                        {nextTask && (
-                            <div className="bg-indigo-900/40 border border-indigo-400/30 p-5 rounded-2xl flex items-center justify-between gap-4 max-w-2xl shadow-inner backdrop-blur-md">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-xl bg-indigo-500 text-white flex items-center justify-center shrink-0">
-                                        <PlayCircle size={24} />
-                                    </div>
-                                    <div>
-                                        <p className="text-xs font-black uppercase tracking-widest text-indigo-300 mb-1">👉 Up Next for you</p>
-                                        <p className="font-bold text-white leading-tight">{nextTask.title}</p>
-                                    </div>
-                                </div>
-                                <button
-                                    onClick={() => {
-                                        // Auto-navigate to module if not selected
-                                        const owningModule = activeLevelObj.modules.find(m => m.tasks.some(t => t.id === nextTask.id));
-                                        if (owningModule) setActiveModuleId(owningModule.id);
-                                        setActiveTask(nextTask);
-                                    }}
-                                    className="px-5 py-2.5 bg-white text-indigo-900 font-bold rounded-xl hover:bg-indigo-50 transition-colors shadow-lg active:scale-95 whitespace-nowrap"
-                                >
-                                    Start Now
-                                </button>
+                        {/* Daily Mission UI */}
+                        <div className="mt-6 flex flex-col gap-3">
+                            <h3 className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">Today's Missions</h3>
+                            <div className="flex flex-col sm:flex-row gap-4">
+                                {[dailyMissions.learning, dailyMissions.practice, dailyMissions.project].map((mission, idx) => {
+                                    if(!mission) return null;
+                                    const icons = [<Layers size={18} />, <Target size={18} />, <Trophy size={18} />];
+                                    const colors = ['text-blue-500', 'text-emerald-500', 'text-[#EA580C]'];
+                                    return (
+                                        <div key={mission.id || idx} className="bg-[#F8F9FA] border border-[var(--border-color)] p-4 rounded-xl flex-1 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow cursor-pointer group" onClick={() => {
+                                            const owningModule = activeLevelObj.modules.find(m => m.tasks.some(t => t.id === mission.id));
+                                            if (owningModule) setActiveModuleId(owningModule.id);
+                                            setActiveTask(mission);
+                                        }}>
+                                            <div className={`flex items-center gap-2 mb-2 ${colors[idx]}`}>
+                                                {icons[idx]}
+                                                <span className="text-xs font-bold uppercase">{mission.type}</span>
+                                            </div>
+                                            <p className="font-bold text-[var(--text-primary)] text-sm leading-tight">{mission.title}</p>
+                                        </div>
+                                    )
+                                })}
                             </div>
-                        )}
+                        </div>
                     </div>
 
                     {/* Top Stat Cards */}
                     <div className="flex flex-wrap lg:flex-nowrap gap-4 w-full lg:w-auto">
-                        <div className="flex-1 lg:flex-none w-full sm:w-auto bg-emerald-500/10 border border-emerald-500/20 px-6 py-5 rounded-3xl flex flex-col justify-center shadow-inner backdrop-blur-xl group">
+                        <div className="flex-1 lg:flex-none w-full sm:w-auto bg-[#F8F9FA] border border-[var(--border-color)] px-6 py-5 rounded-xl flex flex-col justify-center shadow-sm">
                             <div className="flex items-center gap-2 mb-2">
-                                <Trophy className="text-emerald-400 group-hover:scale-110 transition-transform" size={20} />
-                                <p className="text-[11px] text-emerald-300 uppercase font-black tracking-widest">Mastered</p>
+                                <Trophy className="text-emerald-500" size={18} />
+                                <p className="text-[11px] text-[var(--text-secondary)] uppercase font-bold tracking-widest">Mastered</p>
                             </div>
-                            <p className="text-4xl font-black text-white">{totalLevelsCompleted} <span className="text-lg text-emerald-500/50">/ {roadmapData.levels.length}</span></p>
+                            <p className="text-3xl font-bold text-[var(--text-primary)]">{totalLevelsCompleted} <span className="text-base text-gray-400">/ {roadmapData.levels.length}</span></p>
                         </div>
-                        <div className="flex-1 lg:flex-none w-full sm:w-auto bg-orange-500/10 border border-orange-500/20 px-6 py-5 rounded-3xl flex flex-col justify-center shadow-inner backdrop-blur-xl group">
+                        <div className="flex-1 lg:flex-none w-full sm:w-auto bg-[#F8F9FA] border border-[var(--border-color)] px-6 py-5 rounded-xl flex flex-col justify-center shadow-sm">
                             <div className="flex items-center gap-2 mb-2">
-                                <Flame className="text-orange-500 group-hover:scale-110 transition-transform" size={20} />
-                                <p className="text-[11px] text-orange-300 uppercase font-black tracking-widest">Day Streak</p>
+                                <Flame className="text-[#EA580C]" size={18} />
+                                <p className="text-[11px] text-[var(--text-secondary)] uppercase font-bold tracking-widest">Day Streak</p>
                             </div>
-                            <p className="text-4xl font-black text-white">{streak}</p>
+                            <p className="text-3xl font-bold text-[var(--text-primary)]">{streak}</p>
                         </div>
-                        <div className="flex-1 lg:flex-none w-full sm:w-auto bg-yellow-500/10 border border-yellow-500/20 px-6 py-5 rounded-3xl flex flex-col justify-center shadow-inner backdrop-blur-xl group">
+                        <div className="flex-1 lg:flex-none w-full sm:w-auto bg-[#F8F9FA] border border-[var(--border-color)] px-6 py-5 rounded-xl flex flex-col justify-center shadow-sm">
                             <div className="flex items-center gap-2 mb-2">
-                                <Star className="text-yellow-400 group-hover:scale-110 transition-transform" size={20} fill="currentColor" />
-                                <p className="text-[11px] text-yellow-300 uppercase font-black tracking-widest">Total XP</p>
+                                <Star className="text-yellow-500" size={18} fill="currentColor" />
+                                <p className="text-[11px] text-[var(--text-secondary)] uppercase font-bold tracking-widest">Total XP</p>
                             </div>
-                            <p className="text-4xl font-black text-white">{xp}</p>
+                            <p className="text-3xl font-bold text-[var(--text-primary)]">{xp}</p>
                         </div>
                     </div>
                 </div>
@@ -213,10 +207,10 @@ export default function DashboardOverview() {
 
             {/* Level Selection Grid - Only show when NOT inside a module */}
             {!activeModuleId && (
-                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    <div className="flex items-center justify-between mb-6 px-2">
-                        <h2 className="text-2xl font-bold flex items-center gap-3 text-white tracking-tight">
-                            <Map className="text-indigo-400" size={28} /> Year-wise Journey
+                <div className="mt-8">
+                    <div className="flex items-center justify-between mb-6">
+                        <h2 className="text-2xl font-bold flex items-center gap-3 text-[var(--text-primary)] tracking-tight">
+                            <Map className="text-blue-500" size={24} /> Year-wise Journey
                         </h2>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -243,78 +237,95 @@ export default function DashboardOverview() {
             )}
 
             {/* Active Level / Module Content Area */}
-            <div className="glass-panel rounded-[2.5rem] border border-white/5 relative overflow-hidden bg-zinc-950/50 shadow-2xl">
-
+            <div className="bg-white rounded-xl border border-[var(--border-color)] relative overflow-hidden shadow-sm mt-8">
                 {/* Dynamic Header */}
-                <div className="p-8 md:p-10 border-b border-white/5 bg-zinc-900/30">
+                <div className="p-6 md:p-8 border-b border-[var(--border-color)] bg-[#F8F9FA]">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                         <div>
                             {activeModuleId ? (
-                                <div className="animate-in fade-in slide-in-from-left-4 duration-300">
+                                <div>
                                     <button
                                         onClick={() => setActiveModuleId(null)}
-                                        className="mb-4 flex items-center gap-2 text-sm font-bold text-zinc-400 hover:text-white transition-colors bg-zinc-800/50 hover:bg-zinc-800 px-4 py-2 rounded-full border border-white/5"
+                                        className="mb-4 flex items-center gap-2 text-sm font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors bg-white px-4 py-2 rounded-full border border-[var(--border-color)] shadow-sm"
                                     >
                                         <ArrowLeft size={16} /> Back to Modules
                                     </button>
-                                    <h2 className="text-3xl font-black flex items-center gap-3 text-white tracking-tight">
-                                        <Layers className="text-purple-400" size={32} /> {activeModuleObj.title}
+                                    <h2 className="text-2xl font-bold flex items-center gap-3 text-[var(--text-primary)] tracking-tight">
+                                        <Layers className="text-blue-500" size={24} /> {activeModuleObj?.title}
                                     </h2>
-                                    <p className="text-zinc-400 text-sm mt-2 font-medium">{activeModuleObj.description}</p>
+                                    <p className="text-[var(--text-secondary)] text-sm mt-2 font-medium">{activeModuleObj?.description}</p>
                                 </div>
                             ) : (
-                                <div className="animate-in fade-in slide-in-from-right-4 duration-300">
+                                <div>
                                     <div className="flex items-center gap-3 mb-2">
-                                        <h2 className="text-3xl font-black flex items-center gap-3 text-white tracking-tight">
-                                            <Target className="text-purple-400" size={32} /> {activeLevelObj.title} Modules
+                                        <h2 className="text-2xl font-bold flex items-center gap-3 text-[var(--text-primary)] tracking-tight">
+                                            <Target className="text-blue-500" size={24} /> {activeLevelObj?.title} Modules
                                         </h2>
                                     </div>
-                                    <p className="text-zinc-400 text-sm font-medium">{activeLevelObj.description}</p>
+                                    <p className="text-[var(--text-secondary)] text-sm font-medium">{activeLevelObj?.description}</p>
                                 </div>
                             )}
                         </div>
 
                         {/* Progress Indicator */}
-                        <div className="flex items-center gap-4 bg-zinc-950 px-6 py-4 rounded-2xl border border-white/5 shadow-inner min-w-[200px]">
-                            <span className="font-black text-indigo-400 text-xl tracking-tighter">
+                        <div className="flex items-center gap-4 bg-white px-6 py-4 rounded-xl border border-[var(--border-color)] shadow-sm min-w-[200px]">
+                            <span className="font-bold text-emerald-600 text-xl tracking-tighter">
                                 {Math.round(activeModuleId ? calculateModuleProgress(activeModuleObj) : calculateLevelProgress(activeLevelId))}%
                             </span>
-                            <div className="flex-1 h-2.5 bg-zinc-900 rounded-full overflow-hidden border border-white/5">
+                            <div className="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden">
                                 <div
-                                    className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 rounded-full transition-all duration-1000 relative"
+                                    className="h-full bg-emerald-500 rounded-full transition-all duration-1000"
                                     style={{ width: `${activeModuleId ? calculateModuleProgress(activeModuleObj) : calculateLevelProgress(activeLevelId)}%` }}
-                                >
-                                    <div className="absolute top-0 right-0 w-8 h-full bg-white/30 blur-[2px]"></div>
-                                </div>
+                                ></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Body Content */}
-                <div className="p-8 md:p-10 min-h-[400px]">
+                <div className="p-6 md:p-8 min-h-[400px]">
                     {!activeModuleId ? (
-                        /* Module Selection Grid Matrix */
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-8 duration-500">
-                            {activeLevelObj.modules?.map((module) => (
-                                <ModuleCard
-                                    key={module.id}
-                                    module={module}
-                                    isComplete={calculateModuleProgress(module) === 100}
-                                    progressPercent={calculateModuleProgress(module)}
-                                    onClick={() => setActiveModuleId(module.id)}
-                                />
-                            ))}
-                        </div>
+                        <>
+                            {/* Semester Toggle for Level 1 */}
+                            {activeLevelId === "level_1" && (
+                                <div className="flex items-center gap-4 mb-6">
+                                    <button 
+                                        onClick={() => setActiveSemester(1)}
+                                        className={`px-4 py-2 rounded-full font-bold text-sm transition-colors ${activeSemester === 1 ? 'bg-blue-500 text-white shadow-sm' : 'bg-white text-[var(--text-secondary)] border border-[var(--border-color)] hover:bg-gray-50'}`}
+                                    >
+                                        Semester 1
+                                    </button>
+                                    <button 
+                                        onClick={() => setActiveSemester(2)}
+                                        className={`px-4 py-2 rounded-full font-bold text-sm transition-colors ${activeSemester === 2 ? 'bg-blue-500 text-white shadow-sm' : 'bg-white text-[var(--text-secondary)] border border-[var(--border-color)] hover:bg-gray-50'}`}
+                                    >
+                                        Semester 2
+                                    </button>
+                                </div>
+                            )}
+
+                            {/* Module Selection Grid Matrix */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {activeLevelObj?.modules?.filter((_, index) => activeLevelId !== "level_1" || (activeSemester === 1 ? index < 5 : index >= 5)).map((module) => (
+                                    <ModuleCard
+                                        key={module.id}
+                                        module={module}
+                                        isComplete={calculateModuleProgress(module) === 100}
+                                        progressPercent={calculateModuleProgress(module)}
+                                        onClick={() => setActiveModuleId(module.id)}
+                                    />
+                                ))}
+                            </div>
+                        </>
                     ) : (
                         /* Task Item List Matrix */
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
-                            {activeModuleObj.tasks?.map((task) => (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {activeModuleObj?.tasks?.map((task) => (
                                 <TaskItem
                                     key={task.id}
                                     task={task}
                                     isCompleted={allCompletedTasks.includes(task.id)}
-                                    onToggle={() => setActiveTask(task)} /* Phase 7 interaction! */
+                                    onToggle={() => setActiveTask(task)}
                                 />
                             ))}
                         </div>

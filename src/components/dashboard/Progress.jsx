@@ -1,64 +1,69 @@
-import { TrendingUp, BarChart } from "lucide-react";
+import { TrendingUp, Award, Target } from "lucide-react";
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
 export default function Progress() {
-    const weeklyData = [65, 40, 85, 70, 95, 60, 80];
+    const skillData = [
+        { subject: 'Programming', A: 80, fullMark: 100 },
+        { subject: 'Web Dev', A: 65, fullMark: 100 },
+        { subject: 'Aptitude', A: 50, fullMark: 100 },
+        { subject: 'Communication', A: 70, fullMark: 100 },
+        { subject: 'DSA', A: 40, fullMark: 100 },
+    ];
+
+    const weeklyData = [
+        { name: 'Mon', hours: 2 },
+        { name: 'Tue', hours: 3 },
+        { name: 'Wed', hours: 1 },
+        { name: 'Thu', hours: 4 },
+        { name: 'Fri', hours: 2 },
+        { name: 'Sat', hours: 5 },
+        { name: 'Sun', hours: 3 },
+    ];
 
     return (
-        <div className="pb-32">
-            <div className="mb-10">
-                <h1 className="text-4xl font-black text-white tracking-tight flex items-center gap-3">
-                    <TrendingUp className="text-emerald-400" size={36} /> Analytics Hub
+        <div className="p-8 max-w-7xl mx-auto flex flex-col gap-8 pb-32">
+            <div>
+                <h1 className="text-3xl font-bold flex items-center gap-3 text-[var(--text-primary)] tracking-tight">
+                    <TrendingUp className="text-blue-500" size={28} /> Progress Analytics
                 </h1>
-                <p className="text-zinc-400 mt-2 font-medium">Deep dive into your performance metrics and time allocation.</p>
+                <p className="text-[var(--text-secondary)] mt-2 font-medium">Deep dive into your performance metrics and skill progression.</p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-                {/* Main Chart */}
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="lg:col-span-2 glass-panel p-8 rounded-[2.5rem] border border-white/5 bg-zinc-950/50">
-                    <div className="flex justify-between items-center mb-10">
-                        <h3 className="text-xl font-bold text-white tracking-tight">Weekly Focus</h3>
-                        <span className="text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full text-xs font-bold">+12% vs last week</span>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Skill Radar Chart */}
+                <div className="bg-white p-6 rounded-xl border border-[var(--border-color)] shadow-sm">
+                    <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4 flex items-center gap-2">
+                        <Award className="text-emerald-500" size={20} /> Skill Distribution
+                    </h3>
+                    <div className="h-[300px] w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={skillData}>
+                                <PolarGrid />
+                                <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} />
+                                <PolarRadiusAxis angle={30} domain={[0, 100]} />
+                                <Radar name="Student" dataKey="A" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.6} />
+                            </RadarChart>
+                        </ResponsiveContainer>
                     </div>
-
-                    <div className="h-64 flex items-end justify-between gap-2 px-4">
-                        {weeklyData.map((val, i) => (
-                            <div key={i} className="w-full bg-zinc-900 rounded-t-xl relative group flex justify-center h-full">
-                                <motion.div
-                                    initial={{ height: 0 }}
-                                    animate={{ height: `${val}%` }}
-                                    transition={{ delay: i * 0.1, duration: 1, type: "spring" }}
-                                    className="absolute bottom-0 w-full bg-gradient-to-t from-emerald-600 to-teal-400 rounded-t-xl"
-                                >
-                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-xs font-bold text-transparent group-hover:text-emerald-400 transition-colors">{val}%</div>
-                                </motion.div>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="flex justify-between mt-4 text-xs font-bold text-zinc-500 px-4 uppercase tracking-widest">
-                        <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
-                    </div>
-                </motion.div>
-
-                {/* Aggregate Stats */}
-                <div className="space-y-8">
-                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} delay={0.2} className="glass-panel p-8 rounded-[2rem] border border-emerald-500/20 bg-gradient-to-br from-emerald-900/20 to-transparent">
-                        <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-6">
-                            <BarChart size={24} />
-                        </div>
-                        <p className="text-sm font-bold text-zinc-400 uppercase tracking-widest">Total Hours Coded</p>
-                        <h4 className="text-5xl font-black text-white mt-2">124<span className="text-2xl text-emerald-500">h</span></h4>
-                    </motion.div>
-
-                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} delay={0.3} className="glass-panel p-8 rounded-[2rem] border border-blue-500/20 bg-gradient-to-br from-blue-900/20 to-transparent">
-                        <div className="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center mb-6">
-                            <TrendingUp size={24} />
-                        </div>
-                        <p className="text-sm font-bold text-zinc-400 uppercase tracking-widest">Global Rank</p>
-                        <h4 className="text-5xl font-black text-white mt-2">Top 4%</h4>
-                    </motion.div>
                 </div>
 
+                {/* Weekly Hours Bar Chart */}
+                <div className="bg-white p-6 rounded-xl border border-[var(--border-color)] shadow-sm">
+                    <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4 flex items-center gap-2">
+                        <Target className="text-[#EA580C]" size={20} /> Weekly Study Hours
+                    </h3>
+                    <div className="h-[300px] w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={weeklyData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                                <XAxis dataKey="name" tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} axisLine={false} tickLine={false} />
+                                <YAxis tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} axisLine={false} tickLine={false} />
+                                <Tooltip cursor={{ fill: '#f3f4f6' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                                <Bar dataKey="hours" fill="#10b981" radius={[4, 4, 0, 0]} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
             </div>
         </div>
     );

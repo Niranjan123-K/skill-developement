@@ -13,6 +13,11 @@ import ActionPlan from "./components/dashboard/ActionPlan";
 import SkillTracker from "./components/dashboard/SkillTracker";
 import Internships from "./components/dashboard/Internships";
 import ResumeBuilder from "./components/dashboard/ResumeBuilder";
+import DailyTasks from "./components/dashboard/DailyTasks";
+import CodingPractice from "./components/dashboard/CodingPractice";
+import Aptitude from "./components/dashboard/Aptitude";
+import Resources from "./components/dashboard/Resources";
+import Communication from "./components/dashboard/Communication";
 
 function App() {
   return (
@@ -37,6 +42,11 @@ function App() {
           <Route path="skills" element={<SkillTracker />} />
           <Route path="internships" element={<Internships />} />
           <Route path="resume" element={<ResumeBuilder />} />
+          <Route path="tasks" element={<DailyTasks />} />
+          <Route path="coding" element={<CodingPractice />} />
+          <Route path="aptitude" element={<Aptitude />} />
+          <Route path="resources" element={<Resources />} />
+          <Route path="communication" element={<Communication />} />
         </Route>
       </Route>
     </Routes>

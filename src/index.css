@@ -4,46 +4,40 @@
 
 @layer base {
   :root {
-    --bg-color: #fafafa;
-    --text-primary: #09090b;
-    --text-secondary: #71717a;
-    --border-color: rgba(0, 0, 0, 0.05);
-    --glass-bg: rgba(255, 255, 255, 0.6);
+    --bg-color: #F8F9FA;
+    --text-primary: #111827;
+    --text-secondary: #6B7280;
+    --border-color: #E5E7EB;
+    --glass-bg: rgba(255, 255, 255, 1); /* Cards use pure white */
   }
 
-  /* Deep dark top-tier SaaS aesthetic (Linear / Stripe blend) */
+  /* Force light mode styles even if system is dark, as requested for redesign */
   .dark {
-    --bg-color: #09090b;
-    /* Zinc 950 base */
-    --text-primary: #fafafa;
-    --text-secondary: #a1a1aa;
-    /* Zinc 400 */
-    --border-color: rgba(255, 255, 255, 0.06);
-    --glass-bg: rgba(9, 9, 11, 0.6);
+    --bg-color: #F8F9FA;
+    --text-primary: #111827;
+    --text-secondary: #6B7280;
+    --border-color: #E5E7EB;
+    --glass-bg: rgba(255, 255, 255, 1);
   }
 
   body {
     background-color: var(--bg-color);
     color: var(--text-primary);
     transition: background-color 0.3s ease, color 0.3s ease;
-    /* Subtle radial glow representing an ambient premium light source */
-    background-image: radial-gradient(circle at 50% -20%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at -20% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
-    background-attachment: fixed;
+    /* Clean solid background */
   }
 }
 
 @layer utilities {
   .glass-panel {
     background: var(--glass-bg);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
     border: 1px solid var(--border-color);
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.03), 0 8px 32px rgba(0, 0, 0, 0.1);
+    /* Very soft, barely noticeable drop shadow */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   }
 
   .premium-glow {
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.15), inset 0 0 0 1px rgba(139, 92, 246, 0.4);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
   }
 }
 
@@ -57,10 +51,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: #E5E7EB;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #D1D5DB;
 }
